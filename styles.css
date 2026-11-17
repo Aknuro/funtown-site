@@ -474,3 +474,26 @@ input[type=range]{border:0;box-shadow:none}
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .mark{background-size:100% 36%}
 }
+
+/* ---------- photos ---------- */
+.hero-photo{position:relative;margin:0 0 28px 28px;max-width:430px;justify-self:center;width:100%}
+.hero-photo img{display:block;width:100%;height:auto;aspect-ratio:1/1.05;object-fit:cover;border-radius:30px;box-shadow:0 30px 60px rgba(15,23,42,.18)}
+.hero-tiles{position:absolute;left:-28px;bottom:-28px;width:36%;border-radius:20px;overflow:hidden;box-shadow:0 16px 36px rgba(15,23,42,.25);border:5px solid #fff;background:#fff}
+.hero-tiles .tiles{border-radius:0}
+.hero-chip{position:absolute;right:18px;top:18px;background:#fff;border-radius:99px;padding:8px 16px;font-weight:600;font-size:.9rem;box-shadow:0 8px 20px rgba(15,23,42,.18)}
+.dcard.photo{overflow:hidden}
+.dcard.photo h3{margin-top:0}
+.dcard .dphoto{order:-1;display:block;flex:1 1 auto;min-height:230px;width:calc(100% + 72px);max-width:none;margin:-36px -36px 28px;object-fit:cover;transition:transform .8s var(--ease)}
+.dcard:hover .dphoto{transform:scale(1.07)}
+.dcard.photo .deco{width:120px;height:120px;right:18px;top:18px;z-index:1;pointer-events:none}
+.dcard.photo{min-height:560px}
+.banner{margin:0;position:relative;border-radius:30px;overflow:hidden}
+.banner img{display:block;width:100%;aspect-ratio:16/7;object-fit:cover;object-position:50% 80%;transition:transform 1.2s var(--ease)}
+.banner:hover img{transform:scale(1.04)}
+.banner figcaption{position:absolute;left:22px;bottom:20px;background:#fff;border-radius:99px;padding:9px 18px;font-weight:600;font-size:.95rem}
+.row-split .art img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+@supports (animation-timeline:view()){
+  .row-split .art img{animation:tilt linear both;animation-timeline:view();animation-range:entry 0% cover 50%}
+}
+@media (max-width:1020px){.hero-photo{margin:0 0 28px 28px;max-width:420px;justify-self:start}.dcard.photo{min-height:560px}}
+@media (max-width:560px){.banner img{aspect-ratio:4/3}.hero-photo{margin-left:20px}}
