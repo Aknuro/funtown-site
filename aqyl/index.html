@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aqyl Montessori Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,700;1,800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: arches and the colours of Montessori materials (pink tower, red rods, golden beads) on linen paper; stacked rounded panels. */
+:root{
+  --paper:#F4EFE4; --linen:#EBE4D3; --ink:#1E3B2F; --ink-soft:#52665A;
+  --sage:#9BB394; --sage-pale:#E3EADA; --pink:#EDB4BE; --pink-pale:#F8DEE2; --rose:#B24A66;
+  --sky:#A8CBDD; --sky-pale:#DDEBF2; --sun:#F2C766; --sun-pale:#F8E7B8; --wood:#C99A62; --red:#C8554B;
+  --display:'Alegreya',Georgia,serif; --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.04;text-wrap:balance;font-weight:800;letter-spacing:-.01em}
+h1{font-size:clamp(2.7rem,6.4vw,5.2rem)}
+h2{font-size:clamp(2.1rem,4.4vw,3.4rem)}
+h3{font-size:1.55rem}
+em{font-style:italic;color:var(--rose)}
+p{max-width:62ch}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:8px}
+.eyebrow{font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:"";width:26px;height:13px;border:2.5px solid currentColor;border-bottom:0;border-radius:26px 26px 0 0}
+.btn{display:inline-flex;align-items:center;gap:10px;font:800 1rem var(--body);padding:15px 26px;border-radius:999px;border:2.5px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translate(-2px,-3px);box-shadow:4px 5px 0 var(--sun)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--sun-pale)}
+.btn.small{padding:10px 18px;font-size:.92rem}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1.5px solid color-mix(in srgb,var(--ink) 12%,transparent)}
+.bar{display:flex;align-items:center;gap:20px;height:72px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo b{font:800 1.7rem/1 var(--display)}
+.logo small{display:block;font:700 .62rem/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
+nav{margin-left:auto;display:flex;gap:6px;align-items:center}
+nav a.l{font-weight:700;font-size:.95rem;text-decoration:none;padding:8px 12px;border-radius:999px}
+nav a.l:hover{background:var(--sage-pale)}
+.lang{display:flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.lang button{font:800 .8rem var(--body);padding:6px 11px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.burger{display:none;margin-left:auto;width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:transparent;cursor:pointer;font-size:0;position:relative}
+.burger::before,.burger::after{content:"";position:absolute;left:12px;right:12px;height:2.5px;background:var(--ink);border-radius:2px;top:16px;box-shadow:0 7px 0 var(--ink)}
+.burger::after{top:30px;box-shadow:none;display:none}
+
+/* hero */
+.hero{padding:44px 0 0;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:40px;align-items:end}
+.hero-copy{padding-bottom:56px}
+.hero h1{margin-bottom:24px}
+.hero p.lead{font-size:1.22rem;color:var(--ink-soft);margin-bottom:32px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+.hero-art{position:relative}
+.replay{position:absolute;left:6px;top:8px;z-index:2}
+.cube{animation:drop .7s cubic-bezier(.3,1.5,.5,1) backwards;animation-delay:calc(var(--i)*.13s);cursor:pointer;transition:transform .25s}
+.cube:hover{transform:translateX(5px)}
+@keyframes drop{from{transform:translateY(-420px)}to{transform:none}}
+.facts{background:var(--ink);color:var(--paper);border-radius:40px 40px 0 0;margin-top:0}
+.facts ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.facts li{padding:26px 22px;display:flex;flex-direction:column;gap:2px;border-left:1.5px solid color-mix(in srgb,var(--paper) 22%,transparent)}
+.facts li:first-child{border-left:0}
+.facts strong{font:800 1.35rem/1.15 var(--display)}
+.facts span{font-size:.9rem;opacity:.78}
+
+/* sections */
+section.panel{border-radius:48px 48px 0 0;margin-top:-1px;padding:96px 0 104px}
+.s-sage{background:var(--sage-pale)}.s-sky{background:var(--sky-pale)}.s-sun{background:var(--sun-pale)}.s-paper{background:var(--paper)}.s-pink{background:var(--pink-pale)}
+.head{display:grid;gap:16px;margin-bottom:48px;max-width:760px}
+.head p{font-size:1.1rem;color:var(--ink-soft)}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:minmax(250px,.8fr) 1.4fr;gap:28px;align-items:stretch}
+.tablist{display:flex;flex-direction:column;gap:10px}
+.tab{display:flex;align-items:center;gap:14px;text-align:left;font:700 1.02rem var(--body);color:var(--ink);padding:14px 18px;border-radius:22px;border:2.5px solid color-mix(in srgb,var(--ink) 18%,transparent);background:color-mix(in srgb,var(--paper) 70%,transparent);cursor:pointer;transition:.2s}
+.tab i{font:800 1.25rem var(--display);font-style:normal;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--c,var(--sage));flex:none}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-selected=true]{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateX(8px)}
+.tabpanel{background:var(--c,var(--sage));border-radius:140px 140px 32px 32px;padding:56px 46px 44px;display:grid;gap:18px;align-content:start;min-height:100%;border:2.5px solid var(--ink)}
+.tabpanel .num{font:800 5.5rem/.8 var(--display);opacity:.28}
+.tabpanel h3{font-size:2.2rem}
+.tabpanel p{font-size:1.08rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{background:color-mix(in srgb,var(--paper) 80%,transparent);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem}
+.panel-art{width:min(260px,70%);margin:6px auto 0}
+.keyline{font:italic 700 1.3rem var(--display);border-left:4px solid var(--ink);padding-left:16px}
+
+/* age finder */
+.finder{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.card{background:var(--paper);border:2.5px solid var(--ink);border-radius:32px;padding:34px}
+.age-out{font:800 clamp(3.4rem,8vw,5.6rem)/.9 var(--display);display:flex;align-items:baseline;gap:12px}
+.age-out small{font:700 1.1rem var(--body);color:var(--ink-soft)}
+input[type=range]{width:100%;margin:26px 0 6px;accent-color:var(--rose);height:34px;cursor:pointer}
+.scale{display:flex;justify-content:space-between;font-weight:700;font-size:.8rem;color:var(--ink-soft)}
+.result{background:var(--c,var(--pink));transition:background .3s}
+.result h3{font-size:2rem;margin:6px 0 12px}
+.result ul{padding-left:20px;display:grid;gap:6px;margin:14px 0}
+.note{font-size:.85rem;color:var(--ink-soft);margin-top:16px}
+.tag{display:inline-block;background:var(--ink);color:var(--paper);font-weight:800;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:5px 12px}
+
+/* day */
+.day .tabpanel{border-radius:32px 32px 140px 32px}
+.clock{font:800 3.4rem/1 var(--display)}
+.progress{height:14px;border-radius:99px;background:color-mix(in srgb,var(--ink) 14%,transparent);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--ink);border-radius:99px;transition:width .5s}
+
+/* home */
+.home{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:start}
+.ring{display:flex;align-items:center;gap:20px;margin-top:26px}
+.ring svg{width:96px;height:96px;flex:none}
+.checks{display:grid;gap:12px;list-style:none;padding:0}
+.checks label{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;background:var(--paper);border:2.5px solid color-mix(in srgb,var(--ink) 18%,transparent);border-radius:24px;cursor:pointer;transition:.2s}
+.checks label:hover{border-color:var(--ink)}
+.checks input{appearance:none;width:28px;height:28px;border:2.5px solid var(--ink);border-radius:50%;flex:none;margin-top:2px;cursor:pointer;display:grid;place-items:center;transition:.2s}
+.checks input:checked{background:var(--sage)}
+.checks input:checked::after{content:"";width:8px;height:14px;border:solid var(--ink);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.checks input:checked ~ div{opacity:.6}
+.checks b{display:block;font-size:1.05rem}
+.checks span{font-size:.92rem;color:var(--ink-soft)}
+
+/* faq */
+.faq{display:grid;gap:12px;max-width:860px}
+details{background:var(--paper);border:2.5px solid var(--ink);border-radius:26px;padding:0 24px}
+summary{cursor:pointer;list-style:none;font:800 1.35rem var(--display);padding:20px 0;display:flex;justify-content:space-between;gap:16px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:700 1.8rem/1 var(--body);width:36px;height:36px;border-radius:50%;background:var(--sun);display:grid;place-items:center;flex:none;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding-bottom:22px;color:var(--ink-soft)}
+
+/* booking */
+.book{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+form{display:grid;gap:18px}
+.field{display:grid;gap:6px}
+label.t,.field>span{font-weight:800;font-size:.9rem}
+input[type=text],input[type=tel],select,textarea{font:600 1rem var(--body);color:var(--ink);padding:14px 16px;border-radius:16px;border:2.5px solid var(--ink);background:#fff;width:100%}
+.err{color:#9B2C2C;font-weight:700;font-size:.85rem;min-height:1.1em}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.msg{white-space:pre-wrap;background:var(--paper);border:2.5px dashed var(--ink);border-radius:20px;padding:18px;font-weight:600;margin:14px 0}
+.contacts{display:grid;gap:18px;list-style:none;padding:0;margin-top:24px}
+.contacts li{display:flex;gap:16px;align-items:flex-start}
+.contacts .ic{width:46px;height:46px;border-radius:50%;background:var(--c);border:2.5px solid var(--ink);display:grid;place-items:center;flex:none;font-size:1.2rem}
+.contacts small{display:block;font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+footer{background:var(--ink);color:var(--paper);padding:56px 0 40px;border-radius:48px 48px 0 0;margin-top:-1px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between;align-items:center}
+footer q{font:italic 700 1.6rem var(--display);quotes:none}
+
+
+/* progress + reveal */
+#prog{position:fixed;left:0;top:0;height:5px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#D98294,var(--sun),var(--sage),var(--sky));z-index:40}
+.rv{transform:translateY(46px) scale(.97);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.rv.in{transform:none}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+@keyframes up{from{transform:translateY(34px)}}
+.hero-copy>*{animation:up 1s cubic-bezier(.2,.8,.2,1) backwards}
+.hero-copy>:nth-child(2){animation-delay:.12s}.hero-copy>:nth-child(3){animation-delay:.26s}.hero-copy>:nth-child(4){animation-delay:.4s}
+.hero-art{animation:up 1.1s .1s cubic-bezier(.2,.8,.2,1) backwards}
+/* hero toys motion */
+.fl{animation:bob 5.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.fl2{animation:bob 7s -2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-14px) rotate(2deg)}}
+.rays{transform-box:fill-box;transform-origin:center;animation:spin 50s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cloud{animation:drift 16s ease-in-out infinite alternate}
+.cloud.b{animation-duration:22s;animation-delay:-6s}
+@keyframes drift{to{transform:translateX(38px)}}
+.swing{transform-box:fill-box;transform-origin:top center;animation:swing 4.5s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+.fly{animation:fly 14s ease-in-out infinite}
+@keyframes fly{0%,100%{transform:translate(0,0)}25%{transform:translate(70px,-34px)}50%{transform:translate(18px,-78px)}75%{transform:translate(-60px,-30px)}}
+.wing{transform-box:fill-box;transform-origin:center;animation:flap .22s ease-in-out infinite alternate}
+@keyframes flap{to{transform:scaleX(.25)}}
+.twinkle{animation:tw 3s ease-in-out infinite}.twinkle:nth-of-type(2n){animation-delay:-1.2s}
+@keyframes tw{50%{opacity:.25;transform:scale(.7)}}
+.cube{animation:drop .8s cubic-bezier(.3,1.6,.5,1) backwards;animation-delay:calc(var(--i)*.14s + .4s);transform-box:fill-box;transform-origin:bottom center}
+.cube:active{animation:wob .5s}
+@keyframes wob{30%{transform:rotate(-4deg) scale(1.04)}60%{transform:rotate(3deg)}}
+/* marquee */
+.marq{background:var(--sun);border-block:2.5px solid var(--ink);overflow:hidden;white-space:nowrap;position:relative;z-index:1}
+.marq div{display:inline-flex;gap:34px;padding:16px 0;animation:mq 38s linear infinite;font:800 1.5rem var(--display)}
+.marq:hover div{animation-play-state:paused}
+.marq span{display:inline-flex;align-items:center;gap:34px}
+.marq span::after{content:"";width:18px;height:18px;border:2.5px solid var(--ink);background:var(--c,var(--pink));border-radius:50% 50% 3px 3px}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* tab panel motion */
+.tabpanel.swap>*{animation:up .55s cubic-bezier(.2,.8,.2,1) backwards}
+.tabpanel.swap>:nth-child(2){animation-delay:.06s}.tabpanel.swap>:nth-child(3){animation-delay:.12s}.tabpanel.swap>:nth-child(4){animation-delay:.18s}
+.panel-art{width:min(300px,76%);animation:bob 6s ease-in-out infinite;filter:drop-shadow(0 10px 0 rgba(30,59,47,.12))}
+.drip{animation:dripy 1.6s ease-in infinite}.drip:nth-of-type(2){animation-delay:-.5s}.drip:nth-of-type(3){animation-delay:-1s}
+@keyframes dripy{0%{transform:translateY(-14px);opacity:0}20%{opacity:1}100%{transform:translateY(34px);opacity:0}}
+.spinw{animation:spinw 7s linear infinite}
+@keyframes spinw{to{transform:translateX(-80px)}}
+/* game */
+.game{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:stretch}
+.tray{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;align-content:flex-start;justify-content:center;min-height:300px}
+.stage{display:grid;grid-template-rows:1fr auto;justify-items:center;position:relative;overflow:hidden;background:var(--sun-pale);--b:12px;--u:7px}
+.tray{--b:14px;--u:7px}
+.stack{display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;min-height:340px;padding-bottom:10px;align-self:end}
+.gcube{--s:calc(var(--b) + var(--n)*var(--u));width:var(--s);height:var(--s);border:2.5px solid var(--ink);border-radius:calc(var(--s)/9);background:linear-gradient(100deg,#F7C9D1,#EDB4BE 50%,#D98FA0);box-shadow:inset 0 5px 0 rgba(255,255,255,.55),inset -4px 0 0 rgba(30,59,47,.08),0 5px 0 rgba(30,59,47,.14);font:800 .8rem var(--body);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+button.gcube:hover{transform:translateY(-8px) rotate(-2deg)}
+.gcube span{opacity:.6;font-size:.72rem}
+.gcube.placed{animation:drop .6s cubic-bezier(.3,1.6,.5,1);cursor:default;margin-top:-2.5px}
+.gcube.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.gmsg{font:800 1.5rem var(--display);min-height:2.4em;margin-top:18px}
+.gbar{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:22px}
+.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.conf i{position:absolute;top:-12px;left:var(--x);width:11px;height:16px;background:var(--c);border-radius:3px;animation:fall 2.2s var(--dl) cubic-bezier(.3,.6,.6,1) forwards}
+@keyframes fall{to{transform:translateY(520px) rotate(var(--r));opacity:.9}}
+/* garden */
+.garden{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.plant{align-content:start;background:var(--paper);border:2.5px solid var(--ink);border-radius:120px 120px 28px 28px;padding:26px 14px 22px;text-align:center;cursor:pointer;font:inherit;color:inherit;display:grid;gap:6px;justify-items:center;transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .3s}
+.plant:hover{transform:translateY(-8px);background:#fff}
+.plant svg{width:92px;height:150px;overflow:visible}
+.plant .grow{transform-box:fill-box;transform-origin:bottom center;transform:scale(.4);transition:transform 1.8s cubic-bezier(.2,1.2,.3,1);transition-delay:var(--dl)}
+.in .plant .grow,.plant.wet .grow{transform:scale(1)}
+.plant.wet{animation:wob .6s}
+.plant b{font:800 1.3rem var(--display)}
+.plant span{font-size:.86rem;color:var(--ink-soft);line-height:1.4}
+.plant .dr{opacity:0}.plant.wet .dr{animation:dripy 1s ease-in 2}
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.fr{position:relative;aspect-ratio:4/5;overflow:hidden;border:2.5px solid var(--ink);background:var(--c);transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.fr:nth-child(1){border-radius:200px 200px 28px 28px}.fr:nth-child(2){border-radius:28px;margin-top:40px}.fr:nth-child(3) figcaption,.fr:nth-child(4) figcaption{bottom:auto;top:14px}.fr:nth-child(3){border-radius:28px 28px 200px 200px}
+.fr:nth-child(4){border-radius:28px 28px 200px 200px}.fr:nth-child(5){border-radius:28px;margin-top:40px}.fr:nth-child(6){border-radius:200px 200px 28px 28px}
+.fr:hover{transform:rotate(-1.5deg) scale(1.03)}
+.fr svg,.fr img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.fr:hover svg,.fr:hover img{transform:scale(1.08)}
+.fr figcaption{position:absolute;left:14px;right:14px;bottom:14px;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-weight:800;font-size:.9rem;text-align:center}
+/* sticky cta */
+.cta{position:fixed;left:16px;right:16px;bottom:16px;z-index:25;justify-content:center;display:none;transform:translateY(120px);transition:transform .4s;box-shadow:0 8px 0 rgba(30,59,47,.18)}
+.cta.show{transform:none}
+/* footer extras */
+.grass{position:absolute;left:0;right:0;top:-34px;height:34px;overflow:hidden}
+footer{position:relative}
+@media (max-width:980px){
+  .burger{display:block}
+  nav{position:absolute;top:72px;left:0;right:0;background:var(--paper);flex-direction:column;align-items:stretch;padding:14px 20px 22px;border-bottom:2px solid var(--ink);display:none;margin:0}
+  nav.open{display:flex}
+  nav a.l{padding:14px}
+  .lang{align-self:flex-start;margin:8px 14px}
+  .hero-grid,.tabs,.finder,.home,.book{grid-template-columns:1fr}
+  .hero-art{max-width:460px;margin-inline:auto;width:100%}
+  .facts ul{grid-template-columns:1fr 1fr}
+  .facts li:nth-child(3){border-left:0}
+  .tablist{flex-direction:row;overflow-x:auto;padding:4px 4px 10px;scroll-snap-type:x mandatory}
+  .tab{flex:none;scroll-snap-align:start}
+  .tab[aria-selected=true]{transform:none}
+  .tabpanel{padding:44px 26px 34px;border-radius:90px 90px 28px 28px}
+  .day .tabpanel{border-radius:28px 28px 90px 28px}
+  .bar{position:relative}
+  .game{grid-template-columns:1fr}
+  .garden{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tray{min-height:0}
+  .gal{grid-template-columns:repeat(2,1fr)}
+  .fr:nth-child(n){margin-top:0}
+  .cta{display:inline-flex}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .facts strong{font-size:1.05rem;hyphens:auto;overflow-wrap:anywhere}
+  .facts li{padding:20px 14px}
+  section.panel{padding:72px 0 80px;border-radius:32px 32px 0 0}
+  .row2{grid-template-columns:1fr}
+  .card{padding:24px}
+  .stage,.tray{--b:9px;--u:5px}
+  .gal{gap:12px}.fr figcaption{font-size:.75rem;padding:6px 8px;left:8px;right:8px;bottom:8px}
+  .garden{gap:10px}.plant{padding:20px 8px 16px}.plant b{font-size:1.02rem;overflow-wrap:anywhere}.plant span{font-size:.8rem}.stack{min-height:200px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{transform:none!important}.plant .grow{transform:none!important}}
+</style>
+</head>
+<body>
+<div id="prog" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+ <linearGradient id="gPink" x1="0" x2="1"><stop offset="0" stop-color="#F7C9D1"/><stop offset=".55" stop-color="#EDB4BE"/><stop offset="1" stop-color="#D98FA0"/></linearGradient>
+ <linearGradient id="gWood" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E4B982"/><stop offset="1" stop-color="#B98649"/></linearGradient>
+ <linearGradient id="gRed" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E3715F"/><stop offset="1" stop-color="#B03F36"/></linearGradient>
+ <linearGradient id="gBlue" x1="0" x2="1"><stop offset="0" stop-color="#D3E8F3"/><stop offset="1" stop-color="#86B4CB"/></linearGradient>
+ <linearGradient id="gGreen" x1="0" x2="1"><stop offset="0" stop-color="#C3D6BB"/><stop offset="1" stop-color="#86A27E"/></linearGradient>
+ <linearGradient id="gYellow" x1="0" x2="1"><stop offset="0" stop-color="#FBE3A0"/><stop offset="1" stop-color="#E7B544"/></linearGradient>
+ <radialGradient id="gGold" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#FFF4C4"/><stop offset=".5" stop-color="#F2C766"/><stop offset="1" stop-color="#C98F1F"/></radialGradient>
+ <radialGradient id="gSun" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#FFF0B3"/><stop offset="1" stop-color="#F2C766"/></radialGradient>
+ <radialGradient id="gGlobe" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#D3E8F3"/><stop offset="1" stop-color="#6FA3BF"/></radialGradient>
+ <linearGradient id="gShine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs></svg>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Aqyl Montessori Center">
+      <svg width="40" height="44" viewBox="0 0 40 44" aria-hidden="true"><path d="M3 44V20a17 17 0 0 1 34 0v24z" fill="#9BB394" stroke="#1E3B2F" stroke-width="2.5"/><path d="M20 38V24M20 29c-6 0-8-4-8-8 5 0 8 3 8 8zM20 26c5 0 8-3 8-7-5 0-8 3-8 7z" fill="#F2C766" stroke="#1E3B2F" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span><b>Aqyl</b><small>Montessori Center</small></span>
+    </a>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">Меню</button>
+    <nav id="nav" aria-label="Основная навигация">
+      <a class="l" href="#method" data-kk="Әдістеме">Методика</a>
+      <a class="l" href="#play" data-kk="Ойын">Игра</a>
+      <a class="l" href="#program" data-kk="Бағдарлама">Программа</a>
+      <a class="l" href="#gallery" data-kk="Галерея">Галерея</a>
+      <a class="l" href="#faq" data-kk="Сұрақтар">Вопросы</a>
+      <div class="lang" role="group" aria-label="Язык"><button type="button" data-lang="ru" aria-pressed="true">РУС</button><button type="button" data-lang="kk" aria-pressed="false">ҚАЗ</button></div>
+      <a class="btn small" href="#book" data-kk="Записаться">Записаться</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow" data-kk="Астана · Монтессори орталығы">Астана · Монтессори-центр</div>
+      <h1 data-kk="Бала <em>өзі</em> үйренетін орын">Место, где ребёнок учится <em>сам</em></h1>
+      <p class="lead" data-kk="Aqyl: дайындалған Монтессори ортасы, сертификатталған тәрбиешілер және ана тілінде сөйлейтін мұғаліммен ағылшын тілі. Балаға көмектесеміз, бірақ оның орнына істемейміз.">Aqyl: подготовленная Монтессори-среда, сертифицированные педагоги и английский с носителем языка. Мы помогаем ребёнку, но не делаем за него.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#book" data-kk="Сынақ сабаққа жазылу">Записаться на пробное</a>
+        <a class="btn ghost" href="#program" data-kk="Бағдарламаны таңдау">Подобрать программу</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <button class="btn ghost small replay" id="replay" type="button" data-kk="↻ Қайта құру">↻ Собрать заново</button>
+      <svg id="heroSvg" viewBox="0 0 520 580" role="img" aria-label="Розовая башня, радужная пирамидка, цилиндры-вкладыши и красные штанги на полке под аркой">
+        <path d="M30 580V240a230 230 0 0 1 460 0v340z" fill="#9BB394"/>
+        <path d="M30 580V240a230 230 0 0 1 460 0v340z" fill="url(#gShine)"/>
+        <path d="M100 580V272a160 160 0 0 1 320 0v308z" fill="#F8E7B8"/>
+        <g data-d="5"><g transform="translate(398 122)"><g class="rays" stroke="#F4EFE4" stroke-width="5" stroke-linecap="round" opacity=".85">
+          <path d="M0-52v-14M0 52v14M-52 0h-14M52 0h14M37-37l10-10M-37 37l-10 10M37 37l10 10M-37-37l-10-10"/></g>
+          <circle r="34" fill="url(#gSun)" stroke="#1E3B2F" stroke-width="2.5"/><path d="M-14 4q14 12 28 0" stroke="#1E3B2F" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="-11" cy="-6" r="3" fill="#1E3B2F"/><circle cx="11" cy="-6" r="3" fill="#1E3B2F"/></g></g>
+        <g data-d="9"><g class="cloud"><path d="M70 150q0-22 22-22 6-16 26-14 16 2 18 18 18 0 18 18H70z" fill="#F4EFE4" stroke="#1E3B2F" stroke-width="2.5" stroke-linejoin="round"/></g></g>
+        <g data-d="12"><g class="cloud b"><path d="M300 224q0-14 14-14 4-10 16-9 10 2 12 12 12 0 12 11h-54z" fill="#F4EFE4" opacity=".9"/></g></g>
+        <g fill="#F2C766" stroke="#1E3B2F" stroke-width="2"><path class="twinkle" d="M140 80l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path class="twinkle" d="M330 150l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/><path class="twinkle" d="M60 250l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></g>
+        <g data-d="-15"><g class="fl2"><g transform="translate(120 330) rotate(-14)">
+          <ellipse cx="0" cy="44" rx="60" ry="8" fill="#1E3B2F" opacity=".14"/>
+          <g fill="none" stroke="#1E3B2F" stroke-width="3" stroke-linecap="round">
+            <path d="M-54 40A54 54 0 0 1 54 40" stroke-width="15"/><path d="M-54 40A54 54 0 0 1 54 40" stroke="#C8554B" stroke-width="10"/>
+            <path d="M-44 40A44 44 0 0 1 44 40" stroke-width="15"/><path d="M-44 40A44 44 0 0 1 44 40" stroke="#F0955A" stroke-width="10"/>
+            <path d="M-34 40A34 34 0 0 1 34 40" stroke-width="15"/><path d="M-34 40A34 34 0 0 1 34 40" stroke="#F2C766" stroke-width="10"/>
+            <path d="M-24 40A24 24 0 0 1 24 40" stroke-width="15"/><path d="M-24 40A24 24 0 0 1 24 40" stroke="#9BB394" stroke-width="10"/>
+            <path d="M-14 40A14 14 0 0 1 14 40" stroke-width="15"/><path d="M-14 40A14 14 0 0 1 14 40" stroke="#A8CBDD" stroke-width="10"/>
+          </g></g></g></g>
+        <g data-d="14"><g transform="translate(438 34)"><g class="swing"><path d="M0 0V16" stroke="#1E3B2F" stroke-width="2.5"/>
+          <g stroke="#1E3B2F" stroke-width="2.5" fill="url(#gGold)"><circle cx="0" cy="28" r="12"/><circle cx="0" cy="54" r="12"/><circle cx="0" cy="80" r="12"/><circle cx="0" cy="106" r="12"/><circle cx="0" cy="132" r="12"/><circle cx="0" cy="158" r="12"/></g>
+          <g fill="#fff" opacity=".7"><circle cx="-4" cy="24" r="3"/><circle cx="-4" cy="50" r="3"/><circle cx="-4" cy="76" r="3"/><circle cx="-4" cy="102" r="3"/><circle cx="-4" cy="128" r="3"/><circle cx="-4" cy="154" r="3"/></g></g></g></g>
+        <g data-d="20"><g transform="translate(300 250)"><g class="fly"><g stroke="#1E3B2F" stroke-width="2"><ellipse class="wing" cx="-9" cy="-3" rx="10" ry="12" fill="#EDB4BE"/><ellipse class="wing" cx="9" cy="-3" rx="10" ry="12" fill="#A8CBDD"/><rect x="-2" y="-12" width="4" height="22" rx="2" fill="#1E3B2F"/></g></g></g></g>
+        <ellipse cx="260" cy="522" rx="66" ry="9" fill="#1E3B2F" opacity=".18"/>
+        <g id="tower"></g>
+        <g>
+          <rect x="34" y="470" width="128" height="52" rx="9" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/>
+          <path d="M44 478h108" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>
+          <g fill="#7A5430" stroke="#1E3B2F" stroke-width="2.5"><ellipse cx="62" cy="500" rx="13" ry="10"/><ellipse cx="98" cy="500" rx="13" ry="10"/><ellipse cx="134" cy="500" rx="13" ry="10"/></g>
+          <g stroke="#1E3B2F" stroke-width="2.5"><rect x="54" y="446" width="16" height="30" rx="7" fill="url(#gBlue)"/><rect x="90" y="438" width="16" height="38" rx="7" fill="url(#gYellow)"/><rect x="126" y="430" width="16" height="46" rx="7" fill="url(#gRed)"/></g>
+          <g fill="#fff" opacity=".6"><rect x="57" y="450" width="3" height="14" rx="1.5"/><rect x="93" y="442" width="3" height="16" rx="1.5"/><rect x="129" y="434" width="3" height="20" rx="1.5"/></g>
+        </g>
+        <g stroke="#1E3B2F" stroke-width="2.5">
+          <rect x="366" y="466" width="60" height="14" rx="6" fill="url(#gRed)"/><rect x="366" y="482" width="92" height="14" rx="6" fill="url(#gRed)"/><rect x="366" y="498" width="124" height="14" rx="6" fill="url(#gRed)"/>
+        </g>
+        <g stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"><path d="M374 471h40M374 487h72M374 503h104"/></g>
+        <rect x="14" y="518" width="492" height="26" rx="13" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/>
+        <path d="M30 526h460" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+  <div class="facts">
+    <div class="wrap"><ul>
+      <li><strong data-kk="Монтессори ортасы">Монтессори-среда</strong><span data-kk="бала деңгейіндегі материалдар">материалы на уровне детских рук</span></li>
+      <li><strong data-kk="Сертификатталған">Сертифицированные</strong><span data-kk="Монтессори тәрбиешілері">педагоги Монтессори</span></li>
+      <li><strong data-kk="Ағылшын тілі">Английский</strong><span data-kk="ана тілінде сөйлейтін мұғаліммен">с носителем языка</span></li>
+      <li><strong data-kk="Астана">Астана</strong><span id="addrShort">ул. Култегин, 19</span></li>
+    </ul></div>
+  </div>
+</section>
+<div class="marq" aria-hidden="true"><div id="marq"></div></div>
+
+<section class="panel s-sage" id="method">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-kk="Әдістеме">Методика</div>
+      <h2 data-kk="Бес қағида, <em>бір</em> мақсат: тәуелсіз бала" >Пять принципов и одна цель: <em>самостоятельный</em> ребёнок</h2>
+      <p data-kk="Мария Монтессори баланы бақылау арқылы әдісін құрды. Оның идеялары бүгін де жұмыс істейді: бала дайындалған ортада өз қарқынымен дамиды.">Мария Монтессори создала метод, наблюдая за детьми. Идеи работают и сегодня: ребёнок развивается в подготовленной среде в своём темпе.</p>
+    </div>
+    <div class="tabs" id="tabsMethod"></div>
+  </div>
+</section>
+
+<section class="panel s-paper" id="env">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-kk="Орта">Среда</div>
+      <h2 data-kk="Бес аймақ. Әр сөреде <em>өз</em> жұмысы бар">Пять зон. На каждой полке своя <em>работа</em></h2>
+      <p data-kk="Материалдар жүйемен орналасқан: қарапайымнан күрделіге. Бала таңдайды, тәрбиеші көрсетеді және бақылайды.">Материалы расставлены по порядку: от простого к сложному. Ребёнок выбирает, педагог показывает и наблюдает.</p>
+    </div>
+    <div class="tabs" id="tabsEnv"></div>
+  </div>
+</section>
+
+<section class="panel s-sky" id="play">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow" data-kk="Ойын">Игра</div>
+      <h2 data-kk="Қызғылт мұнараны <em>жинаңыз</em>">Соберите <em>розовую башню</em></h2>
+      <p data-kk="Орталықта балалар оны қолдарымен құрастырады: ең үлкен кубтан (10 см) ең кішісіне (1 см) дейін. Сіз де көріңіз.">В центре дети строят её руками: от самого большого куба (10 см) к самому маленькому (1 см). Попробуйте и вы.</p>
+    </div>
+    <div class="game rv">
+      <div class="card">
+        <span class="tag" data-kk="Кубтар">Кубы</span>
+        <div class="tray" id="tray" role="group" aria-label="Кубы"></div>
+        <div class="gbar"><div class="gmsg" id="gmsg" aria-live="polite"></div><button class="btn small ghost" id="gshuffle" type="button" data-kk="↻ Араластыру">↻ Перемешать</button></div>
+      </div>
+      <div class="card stage">
+        <div><span class="tag" data-kk="Мұнара">Башня</span> <span id="gmoves" style="font-weight:800;margin-left:8px"></span></div>
+        <div class="stack" id="stack"></div>
+        <div class="conf" id="conf"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel s-sun" id="garden">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow" data-kk="Өсу">Рост</div>
+      <h2 data-kk="Баламен бірге <em>өсетін</em> қасиеттер">Что растёт <em>вместе</em> с ребёнком</h2>
+      <p data-kk="Өскіндерді басып, суарып көріңіз.">Нажмите на росток, чтобы полить его.</p>
+    </div>
+    <div class="garden rv" id="gardenGrid"></div>
+  </div>
+</section>
+
+<section class="panel s-paper" id="program">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-kk="Бағдарлама">Программа</div>
+      <h2 data-kk="Баланың жасына қарай <em>формат</em> таңдаңыз">Подберите <em>формат</em> по возрасту ребёнка</h2>
+    </div>
+    <div class="finder">
+      <div class="card">
+        <label class="t" for="age" data-kk="Баланың жасы">Возраст ребёнка</label>
+        <div class="age-out"><span id="ageVal">3</span><small id="ageUnit">года</small></div>
+        <input type="range" id="age" min="1" max="7" step="0.5" value="3" aria-describedby="ageUnit">
+        <div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+        <p class="note" data-kk="Жас топтары шамамен берілген. Нақты ақпаратты әкімшіден сұраңыз.">Возрастные группы ориентировочные. Точные условия уточняйте у администратора.</p>
+      </div>
+      <div class="card result" id="result" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="panel s-pink day" id="day">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-kk="Күн тәртібі">День в центре</div>
+      <h2 data-kk="Асықпайтын, бірақ <em>мазмұнды</em> күн">День без спешки, но с <em>содержанием</em></h2>
+      <p data-kk="Үлгі ретінде Монтессори күнінің ырғағы көрсетілген. Нақты кесте топқа байланысты.">Пример ритма Монтессори-дня. Точное расписание зависит от группы, его подскажет администратор.</p>
+    </div>
+    <div class="tabs" id="tabsDay"></div>
+  </div>
+</section>
+
+<section class="panel s-sage" id="gallery">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow" data-kk="Галерея">Галерея</div>
+      <h2 data-kk="Орталық <em>өмірі</em>">Жизнь <em>центра</em></h2>
+      <p data-kk="Орта, материалдар және кішкентай жұмыс сәттері.">Среда, материалы и маленькие рабочие моменты.</p>
+    </div>
+    <div class="gal rv" id="galGrid"></div>
+  </div>
+</section>
+
+<section class="panel s-sky" id="home">
+  <div class="wrap home">
+    <div>
+      <div class="eyebrow" data-kk="Үйде">Дома</div>
+      <h2 data-kk="Монтессори <em>үйде</em> да бастауға болады">Начните Монтессори и <em>дома</em></h2>
+      <p style="margin-top:18px;font-size:1.1rem;color:var(--ink-soft)" data-kk="Үлкен шығын қажет емес. Отыз минут уақыт және бала бойына сәйкес бір сөре жеткілікті. Орындағанын белгілеңіз.">Не нужны дорогие материалы. Хватит получаса и одной полки на уровне роста ребёнка. Отмечайте, что уже сделали.</p>
+      <div class="ring">
+        <svg viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="40" fill="none" stroke="#fff" stroke-width="12"/><circle id="ringArc" cx="48" cy="48" r="40" fill="none" stroke="#1E3B2F" stroke-width="12" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" transform="rotate(-90 48 48)" style="transition:stroke-dashoffset .5s"/></svg>
+        <div><div class="clock" id="ringTxt">0 / 8</div><small style="font-weight:700" data-kk="қадам орындалды">шагов выполнено</small></div>
+      </div>
+    </div>
+    <ul class="checks" id="checks"></ul>
+  </div>
+</section>
+
+<section class="panel s-paper" id="faq">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-kk="Сұрақтар">Вопросы родителей</div>
+      <h2 data-kk="Жиі қойылатын <em>сұрақтар</em>">Что обычно <em>спрашивают</em></h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<section class="panel s-sage" id="book">
+  <div class="wrap book">
+    <div>
+      <div class="eyebrow" data-kk="Жазылу">Запись</div>
+      <h2 data-kk="Сынақ сабаққа <em>келіңіз</em>">Приходите на <em>пробное</em> занятие</h2>
+      <p style="margin-top:18px;font-size:1.1rem;color:var(--ink-soft)" data-kk="Форманы толтырыңыз, біз хабарламаны дайындаймыз. Оны Instagram-ға жіберіңіз, әкімші жауап береді.">Заполните форму, мы подготовим сообщение. Отправьте его в Instagram центра, и администратор ответит.</p>
+      <ul class="contacts">
+        <li><span class="ic" style="--c:var(--pink)" aria-hidden="true">◎</span><div><small data-kk="Мекенжай">Адрес</small><span id="addrFull">Астана, ул. Култегин, 19</span></div></li>
+        <li><span class="ic" style="--c:var(--sky)" aria-hidden="true">@</span><div><small>Instagram</small><a href="https://www.instagram.com/aqyl.montessorycenter" target="_blank" rel="noopener">@aqyl.montessorycenter</a></div></li>
+        <li id="phoneRow" hidden><span class="ic" style="--c:var(--sun)" aria-hidden="true">☎</span><div><small data-kk="Телефон">Телефон</small><span id="phoneTxt"></span></div></li>
+        <li><span class="ic" style="--c:var(--sun)" aria-hidden="true">⌖</span><div><small data-kk="Картада">На карте</small><a href="https://2gis.kz/astana/search/Aqyl%20Montessori" target="_blank" rel="noopener">2ГИС</a></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <form id="form" novalidate>
+        <div class="field"><label class="t" for="fName" data-kk="Сіздің атыңыз">Ваше имя</label><input type="text" id="fName" autocomplete="name"><div class="err" id="eName"></div></div>
+        <div class="field"><label class="t" for="fPhone" data-kk="Телефон">Телефон</label><input type="tel" id="fPhone" placeholder="+7 7__ ___ __ __" autocomplete="tel"><div class="err" id="ePhone"></div></div>
+        <div class="row2">
+          <div class="field"><label class="t" for="fAge" data-kk="Баланың жасы">Возраст ребёнка</label><select id="fAge"></select></div>
+          <div class="field"><label class="t" for="fTime" data-kk="Ыңғайлы уақыт">Удобное время</label><select id="fTime"></select></div>
+        </div>
+        <div class="field"><label class="t" for="fNote" data-kk="Сұрағыңыз (міндетті емес)">Вопрос (необязательно)</label><textarea id="fNote" rows="3"></textarea></div>
+        <button class="btn" type="submit" data-kk="Хабарлама дайындау">Подготовить сообщение</button>
+      </form>
+      <div id="out" hidden>
+        <span class="tag" data-kk="Дайын">Готово</span>
+        <div class="msg" id="msgText"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn small" type="button" id="copy" data-kk="Көшіру">Скопировать</button>
+          <a class="btn small ghost" href="https://www.instagram.com/aqyl.montessorycenter" target="_blank" rel="noopener" data-kk="Instagram ашу">Открыть Instagram</a>
+          <button class="btn small ghost" type="button" id="back" data-kk="Өзгерту">Изменить</button>
+        </div>
+        <p class="note" id="copyNote" data-kk="Хабарлама автоматты түрде жіберілмейді: көшіріп, Instagram-дағы орталыққа жазыңыз.">Сообщение не отправляется автоматически: скопируйте его и напишите центру в Instagram.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <q data-kk="«Маған өзім істеуге көмектес»">«Помоги мне сделать это самому»</q>
+    <div>© Aqyl Montessori Center · Астана<br><small style="opacity:.7">Мария Монтессори</small></div>
+  </div>
+</footer>
+
+<a class="btn cta" id="cta" href="#book" data-kk="Сынақ сабаққа жазылу">Записаться на пробное</a>
+
+<script>
+/* ====== Данные центра: меняйте здесь ====== */
+const CONFIG = {
+  address: {ru:'Астана, ул. Култегин, 19', kk:'Астана, Күлтегін көшесі, 19'},
+  short:   {ru:'ул. Култегин, 19', kk:'Күлтегін к-сі, 19'},
+  photos: [], // сюда можно добавить 6 фото (data-URI или файлы), пока показываются иллюстрации
+  phone: '' // например '+7 7xx xxx xx xx'; пусто = строка скрыта
+};
+
+let lang = 'ru';
+const $ = (s,r=document)=>r.querySelector(s);
+const tr = o => o[lang];
+
+/* ====== Данные ====== */
+const METHOD = {
+ ru:[
+  ['Свободный выбор','Ребёнок сам выбирает занятие и работает столько, сколько нужно. Так появляются интерес, внутренняя мотивация и умение концентрироваться.','Выбор · Интерес · Концентрация','«Что сегодня будешь делать?»'],
+  ['Подготовленная среда','Мебель по росту, полки открыты, у каждого материала своё место. Среда сама подсказывает порядок и учит заботиться о вещах.','Порядок · Доступность · Красота','«Всё на уровне детских глаз и рук»'],
+  ['Разновозрастная группа','Малыши тянутся к старшим, а старшие закрепляют знания, когда объясняют. Дети учатся помогать и ждать.','Помощь · Общение · Уважение','«Учу другого, значит понимаю сам»'],
+  ['Сензитивные периоды','У каждого ребёнка бывают моменты особой чуткости к речи, порядку, движению, цифрам. Педагог замечает их и предлагает нужный материал.','Речь · Порядок · Движение','«Правильный материал в правильный момент»'],
+  ['Педагог-наблюдатель','Взрослый показывает материал, отходит и наблюдает. Он не оценивает, а поддерживает: у ребёнка рождается вера в свои силы.','Наблюдение · Доверие · Поддержка','«Помоги мне сделать это самому»']
+ ],
+ kk:[
+  ['Еркін таңдау','Бала жұмысты өзі таңдап, қажет болғанша айналысады. Осылай қызығушылық пен зейін қалыптасады.','Таңдау · Қызығушылық · Зейін','«Бүгін не істейсің?»'],
+  ['Дайындалған орта','Жиһаз бойына сай, сөрелер ашық, әр материалдың орны бар. Орта реттілікті үйретеді.','Реттілік · Қолжетімділік · Әсемдік','«Бәрі баланың көзі мен қолы деңгейінде»'],
+  ['Әртүрлі жастағы топ','Кішкентайлар үлкендерге ұмтылады, үлкендер түсіндіру арқылы білімін бекітеді.','Көмек · Қарым-қатынас · Құрмет','«Басқаға үйреткенде, өзім түсінемін»'],
+  ['Сензитивті кезеңдер','Әр баланың сөзге, реттілікке, қозғалысқа ерекше сезімтал кезі болады. Тәрбиеші оны байқап, қажетті материалды ұсынады.','Сөйлеу · Реттілік · Қозғалыс','«Дұрыс материал дұрыс сәтте»'],
+  ['Бақылаушы тәрбиеші','Ересек материалды көрсетіп, шетке шығады да бақылайды. Ол бағаламайды, қолдайды: балада өз күшіне сенім пайда болады.','Бақылау · Сенім · Қолдау','«Өзім істеуіме көмектес»']
+ ]};
+const METHOD_C=['var(--sun)','var(--pink)','var(--sky)','var(--sage)','var(--sun)'];
+
+const ART = {
+ life:`<svg viewBox="0 0 240 180" class="panel-art" aria-hidden="true"><ellipse cx="120" cy="168" rx="104" ry="8" fill="#1E3B2F" opacity=".15"/>
+  <path d="M40 54h66v94a12 12 0 0 1-12 12H52a12 12 0 0 1-12-12z" fill="url(#gBlue)" stroke="#1E3B2F" stroke-width="3"/>
+  <path d="M43 98h60v50a9 9 0 0 1-9 9H52a9 9 0 0 1-9-9z" fill="#6FA3BF" opacity=".55"/>
+  <path d="M40 54L22 42M40 54h66" stroke="#1E3B2F" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M106 70c28-4 28 44 0 40" fill="none" stroke="#1E3B2F" stroke-width="3.5"/>
+  <path d="M50 64v26" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  <path d="M152 92h58l-6 62a8 8 0 0 1-8 7h-30a8 8 0 0 1-8-7z" fill="url(#gBlue)" stroke="#1E3B2F" stroke-width="3" opacity=".95"/>
+  <path d="M157 122h48l-3 30a6 6 0 0 1-6 5h-30a6 6 0 0 1-6-5z" fill="#6FA3BF" opacity=".6"/>
+  <g fill="#6FA3BF" stroke="#1E3B2F" stroke-width="2"><ellipse class="drip" cx="181" cy="52" rx="5" ry="7"/><ellipse class="drip" cx="181" cy="52" rx="5" ry="7"/><ellipse class="drip" cx="181" cy="52" rx="5" ry="7"/></g></svg>`,
+ sense:`<svg viewBox="0 0 240 180" class="panel-art" aria-hidden="true"><ellipse cx="120" cy="168" rx="100" ry="8" fill="#1E3B2F" opacity=".15"/>
+  <g stroke="#1E3B2F" stroke-width="3" fill="url(#gPink)"><rect x="60" y="116" width="120" height="48" rx="7"/><rect x="73" y="76" width="94" height="40" rx="6"/><rect x="85" y="44" width="70" height="32" rx="5"/><rect x="97" y="20" width="46" height="24" rx="4"/><rect x="108" y="4" width="24" height="16" rx="3"/></g>
+  <g stroke="#fff" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"><path d="M70 126h100M82 86h76M93 53h54M104 28h32"/></g></svg>`,
+ lang:`<svg viewBox="0 0 240 180" class="panel-art" aria-hidden="true"><ellipse cx="120" cy="170" rx="104" ry="8" fill="#1E3B2F" opacity=".15"/>
+  <g stroke="#1E3B2F" stroke-width="3"><rect x="14" y="48" width="64" height="88" rx="12" fill="url(#gPink)" transform="rotate(-8 46 92)"/><rect x="88" y="34" width="64" height="88" rx="12" fill="url(#gYellow)"/><rect x="162" y="52" width="64" height="88" rx="12" fill="url(#gGreen)" transform="rotate(7 194 96)"/></g>
+  <g font-family="Alegreya,Georgia,serif" font-weight="800" font-size="58" fill="#1E3B2F" text-anchor="middle"><text x="44" y="112" transform="rotate(-8 46 92)">А</text><text x="120" y="100">Ә</text><text x="194" y="116" transform="rotate(7 194 96)">Қ</text></g></svg>`,
+ math:`<svg viewBox="0 0 240 180" class="panel-art" aria-hidden="true"><ellipse cx="120" cy="170" rx="104" ry="8" fill="#1E3B2F" opacity=".15"/>
+  <g stroke="#1E3B2F" stroke-width="2.5" fill="url(#gGold)">
+   <circle cx="26" cy="22" r="11"/><circle cx="52" cy="22" r="11"/><circle cx="78" cy="22" r="11"/><circle cx="104" cy="22" r="11"/><circle cx="130" cy="22" r="11"/><circle cx="156" cy="22" r="11"/><circle cx="182" cy="22" r="11"/><circle cx="208" cy="22" r="11"/>
+   <circle cx="36" cy="82" r="11"/><circle cx="62" cy="82" r="11"/><circle cx="88" cy="82" r="11"/><circle cx="36" cy="108" r="11"/><circle cx="62" cy="108" r="11"/><circle cx="88" cy="108" r="11"/><circle cx="36" cy="134" r="11"/><circle cx="62" cy="134" r="11"/><circle cx="88" cy="134" r="11"/></g>
+  <g stroke="#1E3B2F" stroke-width="3"><rect x="124" y="74" width="100" height="16" rx="5" fill="url(#gRed)"/><rect x="124" y="98" width="68" height="16" rx="5" fill="url(#gBlue)"/><rect x="124" y="122" width="36" height="16" rx="5" fill="url(#gRed)"/></g></svg>`,
+ world:`<svg viewBox="0 0 240 180" class="panel-art" aria-hidden="true"><defs><clipPath id="gc"><circle cx="120" cy="80" r="62"/></clipPath></defs><ellipse cx="120" cy="172" rx="70" ry="7" fill="#1E3B2F" opacity=".15"/>
+  <circle cx="120" cy="80" r="62" fill="url(#gGlobe)"/>
+  <g clip-path="url(#gc)"><g class="spinw"><g fill="url(#gGreen)" stroke="#1E3B2F" stroke-width="2.5"><path id="ct" d="M70 50c14-14 34-8 38 8-10 10-6 26-22 28-14-10-26-20-16-36zM116 100c14-6 26 6 20 20-10 6-22 0-20-20zM150 48c10-8 24-2 24 10-8 8-20 6-24-10z"/><path d="M150 50c14-14 34-8 38 8-10 10-6 26-22 28-14-10-26-20-16-36zM196 100c14-6 26 6 20 20-10 6-22 0-20-20zM230 48c10-8 24-2 24 10-8 8-20 6-24-10z"/><path d="M230 50c14-14 34-8 38 8-10 10-6 26-22 28-14-10-26-20-16-36zM276 100c14-6 26 6 20 20-10 6-22 0-20-20z"/></g></g></g>
+  <circle cx="120" cy="80" r="62" fill="none" stroke="#1E3B2F" stroke-width="3"/><path d="M80 40c-14 24-14 52 0 76" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5" fill="none"/>
+  <path d="M62 56c-18 20-18 46 0 62M178 56c18 20 18 46 0 62" fill="none" stroke="#C99A62" stroke-width="5" stroke-linecap="round"/>
+  <path d="M120 142v18M84 164h72" stroke="#1E3B2F" stroke-width="5" stroke-linecap="round"/></svg>`
+};
+const ENV = {
+ ru:[
+  ['life','Практическая жизнь','Переливание, пересыпание, застёгивание, мытьё посуды, уход за растениями. Дети учатся делать то, что делают взрослые, и гордятся этим.','Мелкая моторика · Самостоятельность · Забота'],
+  ['sense','Сенсорика','Розовая башня, коричневая лестница, цилиндры-вкладыши, шумовые цилиндры. Ребёнок различает размер, форму, вес и звук руками и глазами.','Размер · Форма · Цвет · Звук'],
+  ['lang','Язык','Шершавые буквы, подвижный алфавит, карточки с предметами. Сначала звук, потом буква, потом слово: письмо приходит естественно.','Речь · Звуки · Письмо · Чтение'],
+  ['math','Математика','Золотой бисер, числовые штанги, цифры. Ребёнок видит и держит в руках единицы, десятки, сотни и тысячи.','Счёт · Разряды · Логика'],
+  ['world','Мир вокруг','Глобусы, пазл-карты, природа, опыты, музыка, искусство. Здесь рождается любопытство к миру и уважение к людям.','География · Природа · Культура']
+ ],
+ kk:[
+  ['life','Практикалық өмір','Құю, төгу, түйме салу, ыдыс жуу, өсімдік күтімі. Балалар үлкендер істейтінді өздері істеп, мақтан тұтады.','Ұсақ моторика · Дербестік · Қамқорлық'],
+  ['sense','Сенсорика','Қызғылт мұнара, қоңыр баспалдақ, цилиндр-салғыштар, шу цилиндрлері. Бала өлшемді, пішінді, салмақты және дыбысты ажыратады.','Өлшем · Пішін · Түс · Дыбыс'],
+  ['lang','Тіл','Кедір-бұдыр әріптер, жылжымалы әліпби, заттар карточкалары. Алдымен дыбыс, сосын әріп, сосын сөз: жазу табиғи түрде келеді.','Сөйлеу · Дыбыс · Жазу · Оқу'],
+  ['math','Математика','Алтын моншақ, сан таяқшалары, цифрлар. Бала бірлікті, ондықты, жүздікті қолымен ұстап көреді.','Санау · Разряд · Логика'],
+  ['world','Қоршаған әлем','Глобус, пазл-карталар, табиғат, тәжірибелер, музыка, өнер. Әлемге қызығушылық пен адамдарға құрмет осында туады.','География · Табиғат · Мәдениет']
+ ]};
+const ENV_C=['var(--sun)','var(--pink)','var(--sky)','var(--sage)','var(--sun-pale)'];
+
+const DAY = {
+ ru:[
+  ['08:30','Приход и приветствие','Каждого ребёнка встречают лично. Он сам переодевается, ставит обувь на место и здоровается с группой. Так начинается день без спешки.','Самостоятельность'],
+  ['09:00','Утренний круг','Песня, разговор, новости, счёт дней недели. Дети по очереди говорят и слушают.','Речь · Общение'],
+  ['09:30','Рабочий цикл','Длинный непрерывный отрезок, когда ребёнок выбирает материал, работает с ним и возвращает на полку. Педагог даёт презентации и наблюдает, не перебивая.','Концентрация · Выбор'],
+  ['11:00','Перекус и уход за средой','Дети сами накрывают на стол, наливают воду, убирают за собой, поливают цветы.','Практическая жизнь'],
+  ['11:45','Движение и прогулка','Игры на воздухе, ритмика, упражнения на равновесие. Телу нужен такой же рабочий ритм, как и уму.','Моторика · Здоровье'],
+  ['12:30','English time','Занятие английским с носителем языка: песни, истории, игры. Язык звучит живо, без зубрёжки.','Английский']
+ ],
+ kk:[
+  ['08:30','Келу және амандасу','Әр баламен жеке амандасады. Бала киімін өзі ауыстырып, аяқ киімін орнына қояды.','Дербестік'],
+  ['09:00','Таңертеңгі шеңбер','Ән, әңгіме, жаңалықтар, апта күндерін санау. Балалар кезек-кезек сөйлеп, тыңдайды.','Сөйлеу · Қарым-қатынас'],
+  ['09:30','Жұмыс циклі','Бала материалды таңдап, онымен жұмыс істеп, сөреге қайтаратын ұзақ үзіліссіз уақыт. Тәрбиеші көрсетіп, бөгелмей бақылайды.','Зейін · Таңдау'],
+  ['11:00','Тіскебасар және ортаға күтім','Балалар үстелді өздері жайып, су құйып, артын жинайды, гүл суарады.','Практикалық өмір'],
+  ['11:45','Қозғалыс және серуен','Таза ауада ойындар, ритмика, тепе-теңдік жаттығулары.','Моторика · Денсаулық'],
+  ['12:30','English time','Ана тілінде сөйлейтін мұғаліммен ағылшын тілі: әндер, әңгімелер, ойындар.','Ағылшын тілі']
+ ]};
+const DAY_C=['var(--paper)','var(--pink)','var(--sky)','var(--sage)','var(--sun)','var(--pink-pale)'];
+
+const PROG = [
+ {max:1.5,c:'var(--pink-pale)',
+  ru:{n:'Пока рано для группы',a:'до 1,5 лет',l:['Мы подскажем, как подготовить дом и режим','Напишите нам: подберём формат встречи']},
+  kk:{n:'Топқа әлі ерте',a:'1,5 жасқа дейін',l:['Үйді және тәртіпті қалай дайындауды айтамыз','Бізге жазыңыз: кездесу форматын таңдаймыз']}},
+ {max:3,c:'var(--pink)',
+  ru:{n:'Малыши: первые шаги',a:'1,5–3 года',l:['Практическая жизнь и сенсорные материалы','Речь через песни, книги и разговор','Привыкание к среде и группе без стресса']},
+  kk:{n:'Кішкентайлар: алғашқы қадам',a:'1,5–3 жас',l:['Практикалық өмір және сенсорлық материалдар','Ән, кітап және әңгіме арқылы сөйлеу','Ортаға және топқа стресссіз үйрену']}},
+ {max:4.5,c:'var(--sun)',
+  ru:{n:'Дошкольная группа',a:'3–4,5 года',l:['Все пять зон Монтессори-среды','Первые буквы, звуки и счёт','Английский с носителем языка']},
+  kk:{n:'Мектепке дейінгі топ',a:'3–4,5 жас',l:['Монтессори ортасының бес аймағы','Алғашқы әріптер, дыбыстар және санау','Ана тілінде сөйлейтін мұғаліммен ағылшын тілі']}},
+ {max:6,c:'var(--sky)',
+  ru:{n:'Старшая группа',a:'4,5–6 лет',l:['Письмо и чтение через подвижный алфавит','Золотой бисер, разряды, сложение','Проекты о природе и мире']},
+  kk:{n:'Үлкен топ',a:'4,5–6 жас',l:['Жылжымалы әліпби арқылы жазу және оқу','Алтын моншақ, разрядтар, қосу','Табиғат және әлем туралы жобалар']}},
+ {max:99,c:'var(--sage)',
+  ru:{n:'Подготовка к школе',a:'6–7 лет',l:['Чтение, письмо, счёт в комфортном темпе','Навыки работы в группе и по плану','Уверенность и желание учиться']},
+  kk:{n:'Мектепке дайындық',a:'6–7 жас',l:['Қолайлы қарқынмен оқу, жазу, санау','Топта және жоспар бойынша жұмыс дағдысы','Сенімділік және оқуға ықылас']}}
+];
+
+const HOME = {
+ ru:[
+  ['Низкая открытая полка','Поставьте её в комнате ребёнка. 4–6 вещей, остальное уберите.'],
+  ['Кувшин и стакан','Пусть ребёнок наливает воду сам. Тряпочка рядом для случайных луж.'],
+  ['Крючок на уровне роста','Куртка, рюкзак, шапка: пусть ребёнок вешает сам.'],
+  ['Ротация игрушек','Меняйте набор раз в 1–2 недели, чтобы интерес не гас.'],
+  ['Участие в готовке','Помыть овощи, размешать, намазать: посильная роль каждый день.'],
+  ['Скамеечка у раковины','Умывание и мытьё рук без помощи взрослого.'],
+  ['Тихий час без экранов','Книга, пазл, рисование. Ребёнок выбирает сам.'],
+  ['Сначала наблюдайте','5 минут в день просто смотрите, что ребёнка увлекает.']
+ ],
+ kk:[
+  ['Төмен ашық сөре','Бала бөлмесіне қойыңыз. 4–6 зат, қалғанын жинап қойыңыз.'],
+  ['Құмыра және стақан','Бала суды өзі құйсын. Төгілсе, қасында шүберек тұрсын.'],
+  ['Бойына сай ілгіш','Күртке, рюкзак, телпек: бала өзі ілсін.'],
+  ['Ойыншықтарды ауыстыру','Қызығушылық сөнбеуі үшін 1–2 аптада бір жиынтықты ауыстырыңыз.'],
+  ['Тамақ жасауға қатысу','Көкөніс жуу, араластыру, жағу: күнде жеңіл рөл.'],
+  ['Раковина жанындағы орындық','Жуыну мен қол жууды ересексіз жасау.'],
+  ['Экрансыз тыныш уақыт','Кітап, пазл, сурет салу. Бала өзі таңдайды.'],
+  ['Алдымен бақылаңыз','Күніне 5 минут баланы не қызықтыратынын қарап отырыңыз.']
+ ]};
+
+const FAQ = {
+ ru:[
+  ['С какого возраста можно прийти?','Возрастные группы мы указали ориентировочно: от 1,5 до 7 лет. Точное наличие мест и условия подскажет администратор в Instagram.'],
+  ['Чем это отличается от обычного детского сада?','В Монтессори-центре ребёнок сам выбирает занятие, работает с настоящими материалами в своём темпе, а группа разновозрастная. Педагог не читает лекции, а показывает и наблюдает.'],
+  ['Будет ли ребёнок готов к школе?','Подход развивает самостоятельность, внимание и интерес к учёбе, а в старших группах добавляются чтение, письмо и счёт. Это хорошая база для школы.'],
+  ['Как проходит пробное занятие?','Ребёнок знакомится со средой, выбирает материалы и пробует работать. Родитель наблюдает и задаёт вопросы педагогу. Формат и время согласуйте при записи.'],
+  ['Нужно ли готовить ребёнка заранее?','Нет. Достаточно рассказать ему, что он идёт в новое интересное место. Мы поможем ему привыкнуть спокойно.']
+ ],
+ kk:[
+  ['Қай жастан келуге болады?','Жас топтары шамамен берілген: 1,5-тен 7 жасқа дейін. Бос орын мен шарттарды Instagram арқылы әкімшіден сұраңыз.'],
+  ['Бұл қарапайым балабақшадан несімен ерекшеленеді?','Монтессори орталығында бала шынайы материалдармен өз қарқынымен жұмыс істейді, топ әртүрлі жастағы балалардан тұрады. Тәрбиеші дәріс оқымайды, көрсетіп, бақылайды.'],
+  ['Бала мектепке дайын бола ма?','Әдіс дербестікті, зейінді және оқуға қызығушылықты дамытады, ал үлкен топтарда оқу, жазу, санау қосылады. Бұл мектепке жақсы негіз.'],
+  ['Сынақ сабақ қалай өтеді?','Бала ортамен танысып, материалдарды таңдап, жұмыс істеп көреді. Ата-ана бақылап, тәрбиешіге сұрақ қояды. Формат пен уақытты жазылғанда келісіңіз.'],
+  ['Баланы алдын ала дайындау керек пе?','Жоқ. Оған жаңа қызық жерге баратынын айту жеткілікті. Біз тыныш үйренуге көмектесеміз.']
+ ]};
+
+const UI = {
+ ru:{age:['год','года','лет'],ages:['Выберите','1,5–3 года','3–4,5 года','4,5–6 лет','6–7 лет'],times:['Утро','После обеда','Не важно'],
+     name:'Укажите имя',phone:'Введите номер телефона',
+     msg:(n,p,a,t,q)=>`Здравствуйте! Хочу записаться на пробное занятие в Aqyl Montessori Center.\nИмя: ${n}\nТелефон: ${p}\nВозраст ребёнка: ${a}\nУдобное время: ${t}${q?`\nВопрос: ${q}`:''}`,
+     copied:'Скопировано. Вставьте в сообщение Instagram.',copyfail:'Не удалось скопировать: выделите текст и скопируйте вручную.'},
+ kk:{age:['жас','жас','жас'],ages:['Таңдаңыз','1,5–3 жас','3–4,5 жас','4,5–6 жас','6–7 жас'],times:['Таңертең','Түстен кейін','Маңызды емес'],
+     name:'Атыңызды жазыңыз',phone:'Телефон нөмірін жазыңыз',
+     msg:(n,p,a,t,q)=>`Сәлеметсіз бе! Aqyl Montessori Center-ге сынақ сабаққа жазылғым келеді.\nАты: ${n}\nТелефон: ${p}\nБаланың жасы: ${a}\nЫңғайлы уақыт: ${t}${q?`\nСұрақ: ${q}`:''}`,
+     copied:'Көшірілді. Instagram хабарламасына қойыңыз.',copyfail:'Көшіру мүмкін болмады: мәтінді өзіңіз белгілеп көшіріңіз.'}
+};
+
+/* ====== Hero: розовая башня (кубы 1–10 см) ====== */
+function buildTower(){
+  const g=$('#tower'); let y=522, out='';
+  for(let i=0;i<10;i++){
+    const s=(10-i)*7.4+2, x=260-s/2; y-=s; const r=Math.min(5,s/6);
+    out+=`<g class="cube" style="--i:${i}"><rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${r}" fill="url(#gPink)" stroke="#1E3B2F" stroke-width="2.5"/><rect x="${x+3}" y="${y+3}" width="${Math.max(0,s-6)}" height="${Math.min(7,s/4)}" rx="2" fill="#fff" opacity=".55"/><rect x="${x+s-6}" y="${y+6}" width="3" height="${Math.max(0,s-12)}" rx="1.5" fill="#1E3B2F" opacity=".12"/></g>`;
+  }
+  g.innerHTML=out;
+}
+$('#replay').addEventListener('click',()=>{const g=$('#tower');const h=g.innerHTML;g.innerHTML='';void g.getBoundingClientRect();g.innerHTML=h;});
+
+/* ====== Универсальные табы ====== */
+function mountTabs(root, items, colors, panelFn, state){
+  const el=$(root); const sel=state.sel||0;
+  el.innerHTML=`<div class="tablist" role="tablist"></div><div class="tabpanel" role="tabpanel" id="${root.slice(1)}-p"></div>`;
+  const list=el.firstChild, panel=el.lastChild;
+  const show=i=>{
+    state.sel=i;
+    [...list.children].forEach((b,k)=>b.setAttribute('aria-selected',k===i));
+    panel.style.setProperty('--c',colors[i]);
+    panel.innerHTML=panelFn(items[i],i);
+    panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+  };
+  items.forEach((it,i)=>{
+    const b=document.createElement('button');
+    b.className='tab';b.type='button';b.setAttribute('role','tab');
+    b.style.setProperty('--c',colors[i]);
+    b.innerHTML=`<i>${root==='#tabsDay'?'':i+1}</i><span>${root==='#tabsDay'?it[0]+' · '+it[1]:it[root==='#tabsEnv'?1:0]}</span>`;
+    if(root==='#tabsDay') b.querySelector('i').textContent=String.fromCharCode(0x25CF);
+    b.addEventListener('click',()=>show(i));
+    b.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();const n=(state.sel+1)%items.length;show(n);list.children[n].focus();}
+      if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();const n=(state.sel-1+items.length)%items.length;show(n);list.children[n].focus();}
+    });
+    list.appendChild(b);
+  });
+  show(sel);
+}
+const st={m:{sel:0},e:{sel:0},d:{sel:2}};
+function renderTabs(){
+  mountTabs('#tabsMethod',tr(METHOD),METHOD_C,(it,i)=>`<div class="num">0${i+1}</div><h3>${it[0]}</h3><p>${it[1]}</p><div class="chips">${it[2].split(' · ').map(c=>`<span>${c}</span>`).join('')}</div><div class="keyline">${it[3]}</div>`,st.m);
+  mountTabs('#tabsEnv',tr(ENV),ENV_C,(it)=>`${ART[it[0]]}<h3>${it[1]}</h3><p>${it[2]}</p><div class="chips">${it[3].split(' · ').map(c=>`<span>${c}</span>`).join('')}</div>`,st.e);
+  mountTabs('#tabsDay',tr(DAY),DAY_C,(it,i)=>{const n=tr(DAY).length;return `<div class="clock">${it[0]}</div><h3>${it[1]}</h3><p>${it[2]}</p><div class="chips"><span>${it[3]}</span></div><div class="progress" aria-hidden="true"><i style="width:${Math.round((i+1)/n*100)}%"></i></div>`},st.d);
+}
+
+/* ====== Подбор программы ====== */
+function ageText(v){
+  const u=UI[lang].age; const n=String(v).replace('.',',');
+  if(lang==='kk') return [n,u[0]];
+  const whole=Number.isInteger(v);
+  const w = !whole ? u[1] : (v===1?u[0]:(v<5?u[1]:u[2]));
+  return [n,w];
+}
+function renderProgram(){
+  const v=parseFloat($('#age').value);
+  const [n,u]=ageText(v); $('#ageVal').textContent=n; $('#ageUnit').textContent=u;
+  const p=PROG.find(x=>v<=x.max)||PROG[PROG.length-1]; const d=p[lang];
+  const r=$('#result'); r.style.setProperty('--c',p.c);
+  r.innerHTML=`<span class="tag">${d.a}</span><h3>${d.n}</h3><ul>${d.l.map(l=>`<li>${l}</li>`).join('')}</ul><a class="btn small" href="#book">${lang==='kk'?'Жазылу':'Записаться'}</a>`;
+}
+$('#age').addEventListener('input',renderProgram);
+
+/* ====== Чек-лист дома ====== */
+let checked=[];
+try{checked=JSON.parse(localStorage.getItem('aqyl-home')||'[]')}catch(e){}
+function renderHome(){
+  const items=tr(HOME);
+  $('#checks').innerHTML=items.map((it,i)=>`<li><label for="c${i}"><input type="checkbox" id="c${i}" ${checked.includes(i)?'checked':''}><div><b>${it[0]}</b><span>${it[1]}</span></div></label></li>`).join('');
+  $('#checks').querySelectorAll('input').forEach((cb,i)=>cb.addEventListener('change',()=>{
+    checked=cb.checked?[...new Set([...checked,i])]:checked.filter(x=>x!==i);
+    try{localStorage.setItem('aqyl-home',JSON.stringify(checked))}catch(e){}
+    ring();
+  }));
+  ring();
+}
+function ring(){
+  const n=tr(HOME).length,c=checked.length;
+  $('#ringTxt').textContent=`${c} / ${n}`;
+  $('#ringArc').style.strokeDashoffset=251.3*(1-c/n);
+}
+
+/* ====== FAQ ====== */
+function renderFaq(){
+  $('#faqList').innerHTML=tr(FAQ).map((q,i)=>`<details ${i===0?'open':''}><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('');
+}
+
+/* ====== Форма ====== */
+function fillSelects(){
+  const u=UI[lang];
+  const a=$('#fAge'),t=$('#fTime'),av=a.selectedIndex,tv=t.selectedIndex;
+  a.innerHTML=u.ages.map((x,i)=>`<option value="${i?x:''}">${x}</option>`).join('');
+  t.innerHTML=u.times.map(x=>`<option>${x}</option>`).join('');
+  a.selectedIndex=Math.max(av,0);t.selectedIndex=Math.max(tv,0);
+}
+$('#form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=$('#fName').value.trim(),p=$('#fPhone').value.trim();
+  const okP=p.replace(/\D/g,'').length>=10;
+  $('#eName').textContent=n?'':UI[lang].name;
+  $('#ePhone').textContent=okP?'':UI[lang].phone;
+  if(!n||!okP) return;
+  const a=$('#fAge').value||(lang==='kk'?'көрсетілмеген':'не указан');
+  $('#msgText').textContent=UI[lang].msg(n,p,a,$('#fTime').value,$('#fNote').value.trim());
+  $('#form').hidden=true;$('#out').hidden=false;
+  $('#copyNote').textContent=lang==='kk'?'Хабарлама автоматты түрде жіберілмейді: көшіріп, Instagram-дағы орталыққа жазыңыз.':'Сообщение не отправляется автоматически: скопируйте его и напишите центру в Instagram.';
+});
+$('#back').addEventListener('click',()=>{$('#out').hidden=true;$('#form').hidden=false});
+$('#copy').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText($('#msgText').textContent);$('#copyNote').textContent=UI[lang].copied}
+  catch(e){$('#copyNote').textContent=UI[lang].copyfail}
+});
+
+/* ====== Язык ====== */
+function setLang(l){
+  lang=l;document.documentElement.lang=l;
+  document.querySelectorAll('[data-kk]').forEach(el=>{
+    if(el.dataset.ru===undefined) el.dataset.ru=el.innerHTML;
+    el.innerHTML=l==='kk'?el.dataset.kk:el.dataset.ru;
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===l));
+  $('#addrShort').textContent=CONFIG.short[l];$('#addrFull').textContent=CONFIG.address[l];
+  renderTabs();renderProgram();renderHome();renderFaq();fillSelects();renderMarq();renderGarden();renderGallery();if(G.key)gmsg(G.key),gstat();
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+/* ====== Меню ====== */
+const nav=$('#nav'),burger=$('#burger');
+burger.addEventListener('click',()=>{const o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');burger.setAttribute('aria-expanded',false)}));
+
+/* ====== Бегущая строка ====== */
+const MARQ={ru:['Практическая жизнь','Сенсорика','Язык','Математика','Мир вокруг','English','Свобода выбора','Подготовленная среда'],kk:['Практикалық өмір','Сенсорика','Тіл','Математика','Қоршаған әлем','English','Еркін таңдау','Дайындалған орта']};
+function renderMarq(){
+  const cols=['var(--pink)','var(--sky)','var(--sage)','var(--paper)'];
+  const one=tr(MARQ).map((w,i)=>`<span style="--c:${cols[i%4]}">${w}</span>`).join('');
+  $('#marq').innerHTML=one+one+one+one;
+}
+
+/* ====== Игра: розовая башня ====== */
+const GAME={ru:{start:'Нажмите на самый большой куб',wrong:'Начните с самого большого из оставшихся',win:'Башня готова! Так ребёнок чувствует размер без слов.',moves:'Ходов'},
+            kk:{start:'Ең үлкен кубты басыңыз',wrong:'Қалғандардың ең үлкенінен бастаңыз',win:'Мұнара дайын! Бала өлшемді сөзсіз осылай сезінеді.',moves:'Қадам'}};
+const G={placed:0,moves:0,won:false};
+function gmsg(k){ $('#gmsg').textContent=tr(GAME)[k]; G.key=k; }
+function gstat(){ $('#gmoves').textContent=G.moves?`${tr(GAME).moves}: ${G.moves}`:''; }
+function resetGame(){
+  G.placed=0;G.moves=0;G.won=false;
+  const a=[1,2,3,4,5,6,7,8,9,10];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  $('#tray').innerHTML=a.map(n=>`<button class="gcube" type="button" data-n="${n}" style="--n:${n}" aria-label="${n} см"><span>${n}</span></button>`).join('');
+  $('#stack').innerHTML='';$('#conf').innerHTML='';
+  gmsg('start');gstat();
+}
+function confetti(){
+  const cols=['#EDB4BE','#F2C766','#9BB394','#A8CBDD','#C8554B','#F4EFE4'];
+  $('#conf').innerHTML=Array.from({length:44},()=>`<i style="--x:${Math.random()*100}%;--c:${cols[Math.floor(Math.random()*6)]};--r:${Math.floor(Math.random()*720-360)}deg;--dl:${(Math.random()*.5).toFixed(2)}s"></i>`).join('');
+}
+function initGame(){
+  $('#tray').addEventListener('click',e=>{
+    const b=e.target.closest('button.gcube'); if(!b||G.won) return;
+    G.moves++;
+    const n=+b.dataset.n, need=10-G.placed;
+    if(n===need){
+      b.remove();
+      const d=document.createElement('div');d.className='gcube placed';d.style.setProperty('--n',n);d.innerHTML=`<span>${n}</span>`;
+      $('#stack').appendChild(d);G.placed++;
+      if(G.placed===10){G.won=true;gmsg('win');confetti();} else gmsg('start');
+    } else {
+      b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');gmsg('wrong');
+    }
+    gstat();
+  });
+  $('#gshuffle').addEventListener('click',resetGame);
+  resetGame();
+}
+
+/* ====== Сад: что растёт ====== */
+const PLANTS={ru:[['Самостоятельность','Сам одевается, наливает, убирает'],['Концентрация','Долго работает над одним делом'],['Порядок','Знает, где что лежит'],['Координация','Точные движения рук'],['Любопытство','Задаёт вопросы о мире']],
+ kk:[['Дербестік','Өзі киінеді, құяды, жинайды'],['Зейін','Бір іспен ұзақ айналысады'],['Реттілік','Не қайда жатқанын біледі'],['Үйлесімділік','Қол қозғалысының дәлдігі'],['Қызығушылық','Әлем туралы сұрақ қояды']]};
+const PL_C=['#9BB394','#EDB4BE','#A8CBDD','#F2C766','#C8554B'];
+function plantSVG(i){
+  const c=PL_C[i], n=3+(i%3); let leaves='';
+  for(let k=0;k<n;k++){
+    const y=118-k*22, d=k%2?1:-1;
+    leaves+=`<ellipse cx="${46+d*15}" cy="${y}" rx="15" ry="7" transform="rotate(${d*-28} ${46+d*15} ${y})" fill="${k%2?'#86A27E':'#9BB394'}" stroke="#1E3B2F" stroke-width="2.5"/>`;
+  }
+  const top=118-n*22+8;
+  const bloom=[0,1,2,3,4].map(k=>{const a=k*72;return `<ellipse cx="46" cy="${top-12}" rx="6" ry="10" transform="rotate(${a} 46 ${top})" fill="${c}" stroke="#1E3B2F" stroke-width="2"/>`}).join('');
+  return `<svg viewBox="0 0 92 150" aria-hidden="true"><g class="grow"><path d="M46 132V${top}" stroke="#1E3B2F" stroke-width="4" stroke-linecap="round"/>${leaves}${bloom}<circle cx="46" cy="${top-2}" r="6" fill="url(#gGold)" stroke="#1E3B2F" stroke-width="2"/></g>
+   <g class="dr" fill="#6FA3BF" stroke="#1E3B2F" stroke-width="1.5"><ellipse cx="30" cy="20" rx="3.5" ry="5"/><ellipse cx="46" cy="10" rx="3.5" ry="5"/><ellipse cx="62" cy="20" rx="3.5" ry="5"/></g>
+   <path d="M22 132h48l-6 16H28z" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+}
+function renderGarden(){
+  $('#gardenGrid').innerHTML=tr(PLANTS).map((p,i)=>`<button class="plant" type="button" style="--dl:${i*.18}s">${plantSVG(i)}<b>${p[0]}</b><span>${p[1]}</span></button>`).join('');
+  $('#gardenGrid').querySelectorAll('.plant').forEach(b=>b.addEventListener('click',()=>{b.classList.remove('wet');void b.offsetWidth;b.classList.add('wet')}));
+}
+
+/* ====== Галерея ====== */
+const GAL={ru:['Полка с материалами','Рабочий коврик','Пересыпание','Глобус и карты','Растения в классе','English time'],kk:['Материалдар сөресі','Жұмыс кілемшесі','Төгу жұмысы','Глобус және карталар','Сыныптағы өсімдіктер','English time']};
+const GAL_C=['var(--pink)','var(--sun)','var(--sky)','var(--sun-pale)','var(--sage-pale)','var(--pink-pale)'];
+function scene(i){
+  const sh='<ellipse cx="150" cy="352" rx="120" ry="8" fill="#1E3B2F" opacity=".14"/>';
+  const S=[
+  `<rect x="30" y="110" width="240" height="14" rx="7" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/><rect x="30" y="210" width="240" height="14" rx="7" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/><rect x="30" y="310" width="240" height="14" rx="7" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/>
+   <g stroke="#1E3B2F" stroke-width="2.5"><rect x="48" y="62" width="48" height="48" rx="6" fill="url(#gPink)"/><rect x="104" y="76" width="34" height="34" rx="5" fill="url(#gBlue)"/><path d="M160 110a28 28 0 0 1 56 0z" fill="url(#gYellow)"/><rect x="226" y="84" width="28" height="26" rx="5" fill="url(#gGreen)"/>
+   <rect x="50" y="170" width="70" height="40" rx="8" fill="url(#gWood)"/><circle cx="148" cy="190" r="20" fill="url(#gRed)"/><circle cx="196" cy="190" r="20" fill="url(#gGold)"/><circle cx="244" cy="190" r="20" fill="url(#gBlue)"/>
+   <rect x="46" y="268" width="26" height="42" rx="6" fill="url(#gRed)"/><rect x="78" y="258" width="26" height="52" rx="6" fill="url(#gYellow)"/><rect x="110" y="246" width="26" height="64" rx="6" fill="url(#gBlue)"/><rect x="146" y="278" width="100" height="32" rx="8" fill="url(#gGreen)"/></g>`,
+  `<ellipse cx="150" cy="240" rx="132" ry="92" fill="url(#gGreen)" stroke="#1E3B2F" stroke-width="3"/><ellipse cx="150" cy="240" rx="108" ry="70" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+   <g stroke="#1E3B2F" stroke-width="2.5"><rect x="76" y="200" width="44" height="52" rx="8" fill="url(#gPink)" transform="rotate(-10 98 226)"/><rect x="130" y="190" width="44" height="52" rx="8" fill="url(#gYellow)" transform="rotate(5 152 216)"/><rect x="182" y="212" width="44" height="52" rx="8" fill="url(#gBlue)" transform="rotate(12 204 238)"/></g>
+   <g font-family="Alegreya,serif" font-weight="800" font-size="34" fill="#1E3B2F" text-anchor="middle"><text x="96" y="238" transform="rotate(-10 98 226)">M</text><text x="152" y="228" transform="rotate(5 152 216)">O</text><text x="204" y="252" transform="rotate(12 204 238)">N</text></g>
+   <path d="M60 80q40-40 90 0t90 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".6"/>`,
+  `<rect x="30" y="250" width="240" height="22" rx="8" fill="url(#gWood)" stroke="#1E3B2F" stroke-width="2.5"/><rect x="50" y="272" width="16" height="78" fill="#B98649" stroke="#1E3B2F" stroke-width="2.5"/><rect x="234" y="272" width="16" height="78" fill="#B98649" stroke="#1E3B2F" stroke-width="2.5"/>
+   <path d="M80 190h110l-12 60H92z" fill="url(#gBlue)" stroke="#1E3B2F" stroke-width="3" stroke-linejoin="round"/><g fill="url(#gGold)" stroke="#1E3B2F" stroke-width="2"><circle cx="110" cy="182" r="9"/><circle cx="132" cy="178" r="9"/><circle cx="154" cy="182" r="9"/><circle cx="121" cy="165" r="9"/><circle cx="144" cy="164" r="9"/></g>
+   <path d="M210 250l-6-46h40l-6 46z" fill="url(#gYellow)" stroke="#1E3B2F" stroke-width="3" stroke-linejoin="round"/><g fill="url(#gGold)"><circle cx="40" cy="236" r="6"/><circle cx="52" cy="240" r="6"/></g><path d="M130 110c-10 20 10 20 0 40" stroke="#1E3B2F" stroke-width="3" fill="none" stroke-linecap="round" opacity=".4"/>`,
+  `<circle cx="150" cy="170" r="92" fill="url(#gGlobe)" stroke="#1E3B2F" stroke-width="3"/><g fill="url(#gGreen)" stroke="#1E3B2F" stroke-width="2.5"><path d="M100 120c20-22 48-14 52 10-14 14-8 36-30 40-20-14-36-28-22-50z"/><path d="M170 190c18-8 36 8 28 28-14 8-30 0-28-28z"/><path d="M178 112c14-10 34-2 34 14-12 12-28 8-34-14z"/></g>
+   <path d="M150 262v30M100 300h100" stroke="#1E3B2F" stroke-width="6" stroke-linecap="round"/><path d="M80 120c-14 30-10 70 8 100" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+   <g stroke="#1E3B2F" stroke-width="2.5"><path d="M30 70l50-12 14 40-50 12z" fill="url(#gYellow)"/><path d="M210 54l52 6-6 42-52-6z" fill="url(#gPink)"/></g>`,
+  `<g stroke="#1E3B2F" stroke-width="3"><path d="M52 270h70l-10 74H62z" fill="url(#gWood)"/><path d="M180 290h74l-10 54h-54z" fill="url(#gRed)"/></g>
+   <g stroke="#1E3B2F" stroke-width="3" stroke-linecap="round"><path d="M87 270V160" fill="none"/><path d="M217 290V210"/></g>
+   <g stroke="#1E3B2F" stroke-width="2.5" fill="url(#gGreen)"><ellipse cx="62" cy="200" rx="26" ry="11" transform="rotate(-30 62 200)"/><ellipse cx="112" cy="180" rx="26" ry="11" transform="rotate(30 112 180)"/><ellipse cx="66" cy="236" rx="22" ry="9" transform="rotate(-20 66 236)"/><ellipse cx="108" cy="224" rx="22" ry="9" transform="rotate(25 108 224)"/><ellipse cx="190" cy="250" rx="20" ry="9" transform="rotate(-30 190 250)"/><ellipse cx="244" cy="236" rx="20" ry="9" transform="rotate(30 244 236)"/></g>
+   <g stroke="#1E3B2F" stroke-width="2.5"><circle cx="87" cy="150" r="16" fill="url(#gPink)"/><circle cx="87" cy="150" r="6" fill="url(#gGold)"/><circle cx="217" cy="200" r="14" fill="url(#gYellow)"/></g>`,
+  `<path d="M40 280l110 20 110-20V160L150 180 40 160z" fill="url(#gYellow)" stroke="#1E3B2F" stroke-width="3" stroke-linejoin="round"/><path d="M150 180v120" stroke="#1E3B2F" stroke-width="3"/><g stroke="#1E3B2F" stroke-width="2" opacity=".35"><path d="M60 190l70 12M60 210l70 12M170 202l70-12M170 222l70-12"/></g>
+   <g transform="translate(50 36)"><path d="M0 0h130a16 16 0 0 1 16 16v54a16 16 0 0 1-16 16H46l-24 24 4-24H16A16 16 0 0 1 0 70z" fill="#fff" stroke="#1E3B2F" stroke-width="3" stroke-linejoin="round"/><text x="73" y="55" text-anchor="middle" font-family="Alegreya,serif" font-weight="800" font-size="40" fill="#B24A66">Hello!</text></g>
+   <circle cx="232" cy="96" r="16" fill="url(#gSun)" stroke="#1E3B2F" stroke-width="2.5"/>`
+  ];
+  return `<svg viewBox="0 0 300 375" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${S[i]}${i===1||i===5?'':sh}</svg>`;
+}
+function renderGallery(){
+  const ph=CONFIG.photos||[];
+  $('#galGrid').innerHTML=tr(GAL).map((t,i)=>`<figure class="fr" style="--c:${GAL_C[i]}">${ph[i]?`<img src="${ph[i]}" alt="${t}" loading="lazy">`:scene(i)}<figcaption>${t}</figcaption></figure>`).join('');
+}
+
+/* ====== Эффекты: прогресс, появление, параллакс, липкая кнопка ====== */
+function initFx(){
+  const prog=$('#prog'),cta=$('#cta'),book=$('#book');
+  const onScroll=()=>{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    prog.style.transform=`scaleX(${h>0?Math.min(1,scrollY/h):0})`;
+    const r=book.getBoundingClientRect();
+    cta.classList.toggle('show',scrollY>700&&r.top>innerHeight*.6);
+  };
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  document.querySelectorAll('.head,.tabs,.finder,.home>*,.faq,.book>*').forEach((el,i)=>{el.classList.add('rv');});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv,.garden').forEach(el=>io.observe(el));
+  const hero=$('.hero-art'),layers=[...document.querySelectorAll('#heroSvg [data-d]')];
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&layers.length){
+    hero.addEventListener('pointermove',e=>{
+      const r=hero.getBoundingClientRect(),dx=(e.clientX-r.left)/r.width-.5,dy=(e.clientY-r.top)/r.height-.5;
+      layers.forEach(l=>{const d=+l.dataset.d;l.style.transform=`translate(${dx*d*-1.6}px,${dy*d*-1.6}px)`});
+    });
+    hero.addEventListener('pointerleave',()=>layers.forEach(l=>l.style.transform=''));
+  }
+}
+
+/* ====== Старт ====== */
+if(CONFIG.phone){$('#phoneRow').hidden=false;$('#phoneTxt').textContent=CONFIG.phone}
+buildTower();setLang('ru');initGame();initFx();
+</script>
+</body>
+</html>
